@@ -1,0 +1,10 @@
+postgres:
+  connection_string: postgresql://admin:admin@localhost:5432/data_platform
+
+pipelines:
+  enabled_sources:
+    - query1
+    - query2
+
+schedule:
+  cron: "0 2 * * *"
