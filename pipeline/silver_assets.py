@@ -3,34 +3,28 @@ from dagster import asset
 from connectors.postgres_connector import PostgresConnector
 
 
+
 @asset(deps=["bronze_query1"])
 def silver_query1():
-
     postgres = PostgresConnector(
         "postgresql://admin:admin@localhost:5432/data_platform"
     )
 
-    # Read bronze data
     df = postgres.read(
-        "SELECT * FROM bronze_query1"
+        "SELECT * FROM bronze_query1"                       # read bronze_data
     )
 
-    # Standardize column names
-    df.columns = [col.lower() for col in df.columns]
+    df.columns = [col.lower() for col in df.columns]    # lowercase the column names
 
-    # Remove duplicates
-    df = df.drop_duplicates()
+    df = df.drop_duplicates()      # remove duplicate data
 
-    # Handle nulls
-    df = df.fillna(0)
+    df = df.fillna(0)        # handle null valus
 
-    # Convert date type
-    df["date"] = df["date"].astype(str)
+    
+    df["date"] = df["date"].astype(str)    # convert date type
 
-    # Add metadata
     df["pipeline_layer"] = "silver"
 
-    # Write silver table
-    postgres.write(df, "silver_query1")
+    postgres.write(df, "silver_query1")          # write data to silver table
 
     return df
