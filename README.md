@@ -1,11 +1,32 @@
 # data-platform
 
-I built a modular local data platform using Dagster, PostgreSQL, Docker, and Python.
+I build a local data platform with Dagster,Docker , PostgreSQL and Python.
 
-To avoid full reloads, I implemented hash-based row-level change detection.
+It ingests Oracle query results, processes them through bronze -> silver  -> gold layers, and serves downstream datasets for analytics.
 
-Dagster assets model dependencies explicitly, with schedules, sensors, and asset checks added for orchestration and observability.
+CSV (Mock Oracle)
+    ↓
+Bronze Layer
+    ↓
+Silver Layer
+    ↓
+Gold Layer
 
-Configuration was externalized into YAML files to support multiple client deployments with minimal code changes.
+Started dagster with 'dagster dev' command in CMD
 
-With more time, I would add indexing, partitioning, CI/CD, and more robust validation.
+Bronze Layer stores raw data  as received from source system.
+
+Silver layer tranformend and cleans the data.
+
+Gold layer create business ready datasets optimized for analytics.
+
+To avoid full historical reloads, I implement hash-based row-level change detection to process only changed data.
+
+Dagster assets were used to model explicit data dependencies and improve observability.
+ 
+I also configured YAML files to support multiple clients deployment with minimum code change.
+
+with more upgradations, i also implement later indexing, CI CD, partationing and more validations.
+
+- Add schema validation
+
